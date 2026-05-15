@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+  <display-name>Hospital Management System</display-name>
+
+  <!-- WELCOME FILE -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- CORS FILTER -->
+  <filter>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>com.hospital.util.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+
+  <!-- DASHBOARD -->
+  <servlet>
+    <servlet-name>DashboardServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.DashboardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DashboardServlet</servlet-name>
+    <url-pattern>/api/dashboard</url-pattern>
+  </servlet-mapping>
+
+  <!-- PATIENTS -->
+  <servlet>
+    <servlet-name>PatientServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.PatientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PatientServlet</servlet-name>
+    <url-pattern>/api/patients/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- DOCTORS -->
+  <servlet>
+    <servlet-name>DoctorServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.DoctorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DoctorServlet</servlet-name>
+    <url-pattern>/api/doctors/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- APPOINTMENTS -->
+  <servlet>
+    <servlet-name>AppointmentServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.AppointmentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AppointmentServlet</servlet-name>
+    <url-pattern>/api/appointments/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- ROOMS -->
+  <servlet>
+    <servlet-name>RoomServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.RoomServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RoomServlet</servlet-name>
+    <url-pattern>/api/rooms/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- BILLS -->
+  <servlet>
+    <servlet-name>BillServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.BillServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BillServlet</servlet-name>
+    <url-pattern>/api/bills/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- MEDICINES -->
+  <servlet>
+    <servlet-name>MedicineServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.MedicineServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MedicineServlet</servlet-name>
+    <url-pattern>/api/medicines/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- STAFF -->
+  <servlet>
+    <servlet-name>StaffServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.StaffServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StaffServlet</servlet-name>
+    <url-pattern>/api/staff/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- LAB REPORTS -->
+  <servlet>
+    <servlet-name>LabReportServlet</servlet-name>
+    <servlet-class>com.hospital.servlet.LabReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LabReportServlet</servlet-name>
+    <url-pattern>/api/lab-reports/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

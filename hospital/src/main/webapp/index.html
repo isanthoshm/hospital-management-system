@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Management System</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏥</div>
+    <h2>MediCare HMS <span>Hospital Management System</span></h2>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Overview</div>
+    <button class="nav-item active" data-section="dashboard" onclick="navigate('dashboard')">
+      <span class="icon">📊</span> Dashboard
+    </button>
+
+    <div class="nav-label">Clinical</div>
+    <button class="nav-item" data-section="patients" onclick="navigate('patients')">
+      <span class="icon">👤</span> Patients
+    </button>
+    <button class="nav-item" data-section="doctors" onclick="navigate('doctors')">
+      <span class="icon">👨‍⚕️</span> Doctors
+    </button>
+    <button class="nav-item" data-section="appointments" onclick="navigate('appointments')">
+      <span class="icon">📅</span> Appointments
+    </button>
+    <button class="nav-item" data-section="lab-reports" onclick="navigate('lab-reports')">
+      <span class="icon">🔬</span> Lab Reports
+    </button>
+
+    <div class="nav-label">Operations</div>
+    <button class="nav-item" data-section="rooms" onclick="navigate('rooms')">
+      <span class="icon">🛏️</span> Rooms
+    </button>
+    <button class="nav-item" data-section="pharmacy" onclick="navigate('pharmacy')">
+      <span class="icon">💊</span> Pharmacy
+    </button>
+    <button class="nav-item" data-section="billing" onclick="navigate('billing')">
+      <span class="icon">💳</span> Billing
+    </button>
+    <button class="nav-item" data-section="staff" onclick="navigate('staff')">
+      <span class="icon">👥</span> Staff
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">MediCare HMS v1.0 &copy; 2025</div>
+</aside>
+
+<!-- ════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════ -->
+<div class="main">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <span class="topbar-title">Dashboard</span>
+    <div class="topbar-right">
+      <span class="topbar-date" id="topbar-date"></span>
+      <span style="font-size:1.4rem">🏥</span>
+    </div>
+  </header>
+
+  <div class="page-content">
+
+    <!-- ─────────────────────────────────────
+         DASHBOARD
+    ───────────────────────────────────── -->
+    <section id="dashboard" class="page-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Good Morning 👋</div>
+          <div class="section-sub">Here's what's happening today at the hospital</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👤</div>
+          <div class="stat-val" id="stat-patients">—</div>
+          <div class="stat-lbl">Total Patients</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">👨‍⚕️</div>
+          <div class="stat-val" id="stat-doctors">—</div>
+          <div class="stat-lbl">Doctors</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">📅</div>
+          <div class="stat-val" id="stat-appts">—</div>
+          <div class="stat-lbl">Today's Appts</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">🛏️</div>
+          <div class="stat-val" id="stat-rooms">—</div>
+          <div class="stat-lbl">Avail. Rooms</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">👥</div>
+          <div class="stat-val" id="stat-staff">—</div>
+          <div class="stat-lbl">Active Staff</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">💊</div>
+          <div class="stat-val" id="stat-lowstock">—</div>
+          <div class="stat-lbl">Low Stock Meds</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">🔬</div>
+          <div class="stat-val" id="stat-labreports">—</div>
+          <div class="stat-lbl">Pending Reports</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Quick Actions</span></div>
+          <div class="card-body" style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-primary" onclick="navigate('patients');newPatient()">➕ Add Patient</button>
+            <button class="btn btn-secondary" onclick="navigate('appointments')">📅 New Appointment</button>
+            <button class="btn btn-secondary" onclick="navigate('billing')">💳 Create Bill</button>
+            <button class="btn btn-secondary" onclick="navigate('lab-reports')">🔬 Add Report</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">System Info</span></div>
+          <div class="card-body" style="font-size:.875rem;color:var(--slate-600);line-height:2">
+            <div>🏥 <strong>MediCare Hospital Management System</strong></div>
+            <div>🔧 Backend: Java + JDBC + MySQL</div>
+            <div>🎨 Frontend: HTML + CSS + JavaScript</div>
+            <div>📦 Version: 1.0.0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         PATIENTS
+    ───────────────────────────────────── -->
+    <section id="patients" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Patients</div>
+          <div class="section-sub">Manage patient records</div>
+        </div>
+        <button class="btn btn-primary" onclick="newPatient()">➕ Add Patient</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="search-bar" style="margin:0">
+            <input class="search-input" type="text" placeholder="Search by name, phone, email…"
+              oninput="loadPatients(this.value)" />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Name</th><th>Gender</th><th>Blood</th><th>Phone</th><th>Status</th><th>Registered</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="patients-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         DOCTORS
+    ───────────────────────────────────── -->
+    <section id="doctors" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Doctors</div>
+          <div class="section-sub">Medical staff directory</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('doctor-modal')">➕ Add Doctor</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <input class="search-input" type="text" placeholder="Search doctors…"
+            oninput="loadDoctors(this.value)" style="border:1px solid var(--slate-200)"/>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Name</th><th>Specialization</th><th>Phone</th><th>Experience</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="doctors-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         APPOINTMENTS
+    ───────────────────────────────────── -->
+    <section id="appointments" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Appointments</div>
+          <div class="section-sub">Schedule and track consultations</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('appt-modal')">➕ Book Appointment</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appts-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         ROOMS
+    ───────────────────────────────────── -->
+    <section id="rooms" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Rooms</div>
+          <div class="section-sub">Room availability and management</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('room-modal')">➕ Add Room</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Room No.</th><th>Type</th><th>Floor</th><th>Occupancy</th><th>Rate</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="rooms-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         PHARMACY
+    ───────────────────────────────────── -->
+    <section id="pharmacy" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Pharmacy</div>
+          <div class="section-sub">Medicine inventory management</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('medicine-modal')">➕ Add Medicine</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Category</th><th>Manufacturer</th><th>Unit Price</th><th>Stock</th><th>Expiry</th><th>Actions</th></tr></thead>
+            <tbody id="pharmacy-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         BILLING
+    ───────────────────────────────────── -->
+    <section id="billing" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Billing</div>
+          <div class="section-sub">Patient bills and payments</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('bill-modal')">➕ Create Bill</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Patient</th><th>Date</th><th>Total</th><th>Paid</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="billing-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         STAFF
+    ───────────────────────────────────── -->
+    <section id="staff" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Staff</div>
+          <div class="section-sub">Hospital staff management</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('staff-modal')">➕ Add Staff</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Role</th><th>Department</th><th>Phone</th><th>Salary</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="staff-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         LAB REPORTS
+    ───────────────────────────────────── -->
+    <section id="lab-reports" class="page-section" style="display:none">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Lab Reports</div>
+          <div class="section-sub">Diagnostic test management</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('lab-modal')">➕ Add Report</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Patient</th><th>Test</th><th>Doctor</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="lab-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page-content -->
+</div><!-- /main -->
+
+<!-- ════════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+
+<!-- Patient Modal -->
+<div class="modal-overlay" id="patient-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="patient-modal-title">Add Patient</span>
+      <button class="modal-close" onclick="closeModal('patient-modal')">✕</button>
+    </div>
+    <form id="patient-form" onsubmit="event.preventDefault();savePatient()">
+      <input type="hidden" id="patient-id" />
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">Full Name *</label>
+            <input class="form-control" id="p-name" placeholder="Enter full name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Birth</label>
+            <input class="form-control" id="p-dob" type="date" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select class="form-control" id="p-gender">
+              <option value="">Select</option>
+              <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Blood Group</label>
+            <select class="form-control" id="p-blood">
+              <option value="">Select</option>
+              <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone *</label>
+            <input class="form-control" id="p-phone" placeholder="Phone number" required />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Email</label>
+            <input class="form-control" id="p-email" type="email" placeholder="Email address" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" id="p-address" placeholder="Full address"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Emergency Contact Name</label>
+            <input class="form-control" id="p-ec-name" placeholder="Contact person" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Emergency Phone</label>
+            <input class="form-control" id="p-ec-phone" placeholder="Emergency number" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" id="p-status">
+              <option>Outpatient</option><option>Admitted</option><option>Discharged</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('patient-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">💾 Save Patient</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Doctor Modal -->
+<div class="modal-overlay" id="doctor-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="doctor-modal-title">Add Doctor</span>
+      <button class="modal-close" onclick="closeModal('doctor-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <input type="hidden" id="doctor-id" />
+        <div class="form-group full">
+          <label class="form-label">Full Name *</label>
+          <input class="form-control" id="d-name" placeholder="Dr. Full Name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Specialization *</label>
+          <input class="form-control" id="d-spec" placeholder="e.g. Cardiology" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Qualification</label>
+          <input class="form-control" id="d-qual" placeholder="MBBS, MD..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-control" id="d-phone" placeholder="Phone number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" id="d-email" type="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Experience (years)</label>
+          <input class="form-control" id="d-exp" type="number" min="0" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Consultation Fee (₹)</label>
+          <input class="form-control" id="d-fee" type="number" min="0" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Availability</label>
+          <select class="form-control" id="d-avail">
+            <option>Available</option><option>On Leave</option><option>Busy</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('doctor-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDoctor()">💾 Save Doctor</button>
+    </div>
+  </div>
+</div>
+
+<!-- Appointment Modal -->
+<div class="modal-overlay" id="appt-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Book Appointment</span>
+      <button class="modal-close" onclick="closeModal('appt-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Patient ID *</label>
+          <input class="form-control" id="a-patient" type="number" placeholder="Patient ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Doctor ID *</label>
+          <input class="form-control" id="a-doctor" type="number" placeholder="Doctor ID" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date *</label>
+          <input class="form-control" id="a-date" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Time *</label>
+          <input class="form-control" id="a-time" type="time" />
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Reason</label>
+          <textarea class="form-control" id="a-reason" placeholder="Reason for visit"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('appt-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAppointment()">💾 Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- Room Modal -->
+<div class="modal-overlay" id="room-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add Room</span>
+      <button class="modal-close" onclick="closeModal('room-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <input type="hidden" id="room-id" />
+        <div class="form-group">
+          <label class="form-label">Room Number *</label>
+          <input class="form-control" id="r-num" placeholder="e.g. R201" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type *</label>
+          <select class="form-control" id="r-type">
+            <option>General</option><option>Private</option><option>ICU</option>
+            <option>Emergency</option><option>Operation Theatre</option><option>Lab</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Floor</label>
+          <input class="form-control" id="r-floor" type="number" value="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Capacity</label>
+          <input class="form-control" id="r-cap" type="number" value="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price/Day (₹)</label>
+          <input class="form-control" id="r-price" type="number" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-control" id="r-status">
+            <option>Available</option><option>Occupied</option><option>Maintenance</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('room-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRoom()">💾 Save Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- Medicine Modal -->
+<div class="modal-overlay" id="medicine-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add Medicine</span>
+      <button class="modal-close" onclick="closeModal('medicine-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <input type="hidden" id="med-id" />
+        <div class="form-group full">
+          <label class="form-label">Medicine Name *</label>
+          <input class="form-control" id="m-name" placeholder="Name + dosage" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <input class="form-control" id="m-cat" placeholder="e.g. Antibiotic" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Manufacturer</label>
+          <input class="form-control" id="m-mfr" placeholder="Manufacturer" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit Price (₹)</label>
+          <input class="form-control" id="m-price" type="number" value="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock Quantity</label>
+          <input class="form-control" id="m-stock" type="number" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expiry Date</label>
+          <input class="form-control" id="m-expiry" type="date" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('medicine-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMedicine()">💾 Save Medicine</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bill Modal -->
+<div class="modal-overlay" id="bill-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Create Bill</span>
+      <button class="modal-close" onclick="closeModal('bill-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Patient ID *</label>
+          <input class="form-control" id="b-patient" type="number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date *</label>
+          <input class="form-control" id="b-date" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Consultation Fee (₹)</label>
+          <input class="form-control" id="b-consult" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Room Charges (₹)</label>
+          <input class="form-control" id="b-room" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Medicine Charges (₹)</label>
+          <input class="form-control" id="b-med" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Lab Charges (₹)</label>
+          <input class="form-control" id="b-lab" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Other Charges (₹)</label>
+          <input class="form-control" id="b-other" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Discount (₹)</label>
+          <input class="form-control" id="b-disc" type="number" value="0" oninput="calcTotal()" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Amount (₹)</label>
+          <input class="form-control" id="b-total" type="number" readonly style="background:var(--slate-100)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Paid Amount (₹)</label>
+          <input class="form-control" id="b-paid" type="number" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Method</label>
+          <select class="form-control" id="b-method">
+            <option>Cash</option><option>Card</option><option>UPI</option>
+            <option>Insurance</option><option>Online</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-control" id="b-status">
+            <option>Pending</option><option>Partial</option><option>Paid</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('bill-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBill()">💾 Save Bill</button>
+    </div>
+  </div>
+</div>
+
+<!-- Staff Modal -->
+<div class="modal-overlay" id="staff-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add Staff</span>
+      <button class="modal-close" onclick="closeModal('staff-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <input type="hidden" id="staff-id" />
+        <div class="form-group full">
+          <label class="form-label">Full Name *</label>
+          <input class="form-control" id="s-name" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role *</label>
+          <select class="form-control" id="s-role">
+            <option>Nurse</option><option>Receptionist</option><option>Lab Technician</option>
+            <option>Pharmacist</option><option>Cleaner</option><option>Admin</option><option>Security</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department</label>
+          <input class="form-control" id="s-dept" placeholder="Department" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input class="form-control" id="s-phone" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-control" id="s-email" type="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Salary (₹)</label>
+          <input class="form-control" id="s-salary" type="number" value="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Join Date</label>
+          <input class="form-control" id="s-join" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-control" id="s-status">
+            <option>Active</option><option>Inactive</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('staff-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStaff()">💾 Save Staff</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lab Report Modal -->
+<div class="modal-overlay" id="lab-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add Lab Report</span>
+      <button class="modal-close" onclick="closeModal('lab-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Patient ID *</label>
+          <input class="form-control" id="lr-patient" type="number" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Doctor ID *</label>
+          <input class="form-control" id="lr-doctor" type="number" />
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Test Name *</label>
+          <input class="form-control" id="lr-test" placeholder="e.g. Complete Blood Count" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Test Date</label>
+          <input class="form-control" id="lr-date" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-control" id="lr-status">
+            <option>Pending</option><option>Processing</option><option>Completed</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Result</label>
+          <textarea class="form-control" id="lr-result" placeholder="Test result values"></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Remarks</label>
+          <textarea class="form-control" id="lr-remarks" placeholder="Doctor's remarks"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('lab-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLabReport()">💾 Save Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     TOAST CONTAINER
+════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ════════════════════════════════════════
+     EXTRA JS FOR SAVES
+════════════════════════════════════════ -->
+<script>
+// Billing total calc
+function calcTotal() {
+  const vals = ['b-consult','b-room','b-med','b-lab','b-other'].map(id =>
+    parseFloat(document.getElementById(id).value)||0);
+  const disc = parseFloat(document.getElementById('b-disc').value)||0;
+  const total = vals.reduce((a,b)=>a+b,0) - disc;
+  document.getElementById('b-total').value = total.toFixed(2);
+}
+
+async function saveDoctor() {
+  const id = document.getElementById('doctor-id').value;
+  const data = {
+    fullName: document.getElementById('d-name').value,
+    specialization: document.getElementById('d-spec').value,
+    qualification: document.getElementById('d-qual').value,
+    phone: document.getElementById('d-phone').value,
+    email: document.getElementById('d-email').value,
+    experienceYrs: document.getElementById('d-exp').value,
+    consultationFee: document.getElementById('d-fee').value,
+    availability: document.getElementById('d-avail').value,
+  };
+  try {
+    const method = id ? 'PUT' : 'POST';
+    const url    = id ? `/doctors/${id}` : '/doctors';
+    const r = await apiFetch(url, method, buildForm(data));
+    if (r.success) { toast('Doctor saved'); closeModal('doctor-modal'); loadDoctors(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveAppointment() {
+  const data = {
+    patientId: document.getElementById('a-patient').value,
+    doctorId:  document.getElementById('a-doctor').value,
+    appointmentDate: document.getElementById('a-date').value,
+    appointmentTime: document.getElementById('a-time').value,
+    reason: document.getElementById('a-reason').value,
+    status: 'Scheduled',
+  };
+  try {
+    const r = await apiFetch('/appointments','POST',buildForm(data));
+    if (r.success) { toast('Appointment booked'); closeModal('appt-modal'); loadAppointments(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveRoom() {
+  const id = document.getElementById('room-id').value;
+  const data = {
+    roomNumber: document.getElementById('r-num').value,
+    roomType:   document.getElementById('r-type').value,
+    floor:      document.getElementById('r-floor').value,
+    capacity:   document.getElementById('r-cap').value,
+    occupied:   0,
+    pricePerDay: document.getElementById('r-price').value,
+    status:     document.getElementById('r-status').value,
+  };
+  try {
+    const method = id ? 'PUT' : 'POST';
+    const url    = id ? `/rooms/${id}` : '/rooms';
+    const r = await apiFetch(url,method,buildForm(data));
+    if (r.success) { toast('Room saved'); closeModal('room-modal'); loadRooms(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveMedicine() {
+  const id = document.getElementById('med-id').value;
+  const data = {
+    name:        document.getElementById('m-name').value,
+    category:    document.getElementById('m-cat').value,
+    manufacturer:document.getElementById('m-mfr').value,
+    unitPrice:   document.getElementById('m-price').value,
+    stockQty:    document.getElementById('m-stock').value,
+    expiryDate:  document.getElementById('m-expiry').value,
+  };
+  try {
+    const method = id ? 'PUT' : 'POST';
+    const url    = id ? `/medicines/${id}` : '/medicines';
+    const r = await apiFetch(url,method,buildForm(data));
+    if (r.success) { toast('Medicine saved'); closeModal('medicine-modal'); loadPharmacy(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveBill() {
+  const data = {
+    patientId:       document.getElementById('b-patient').value,
+    billDate:        document.getElementById('b-date').value,
+    consultationFee: document.getElementById('b-consult').value,
+    roomCharges:     document.getElementById('b-room').value,
+    medicineCharges: document.getElementById('b-med').value,
+    labCharges:      document.getElementById('b-lab').value,
+    otherCharges:    document.getElementById('b-other').value,
+    discount:        document.getElementById('b-disc').value,
+    totalAmount:     document.getElementById('b-total').value,
+    paidAmount:      document.getElementById('b-paid').value,
+    paymentMethod:   document.getElementById('b-method').value,
+    status:          document.getElementById('b-status').value,
+  };
+  try {
+    const r = await apiFetch('/bills','POST',buildForm(data));
+    if (r.success) { toast('Bill created'); closeModal('bill-modal'); loadBilling(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveStaff() {
+  const id = document.getElementById('staff-id').value;
+  const data = {
+    fullName:   document.getElementById('s-name').value,
+    role:       document.getElementById('s-role').value,
+    department: document.getElementById('s-dept').value,
+    phone:      document.getElementById('s-phone').value,
+    email:      document.getElementById('s-email').value,
+    salary:     document.getElementById('s-salary').value,
+    joinDate:   document.getElementById('s-join').value,
+    status:     document.getElementById('s-status').value,
+  };
+  try {
+    const method = id ? 'PUT' : 'POST';
+    const url    = id ? `/staff/${id}` : '/staff';
+    const r = await apiFetch(url,method,buildForm(data));
+    if (r.success) { toast('Staff saved'); closeModal('staff-modal'); loadStaff(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function saveLabReport() {
+  const data = {
+    patientId: document.getElementById('lr-patient').value,
+    doctorId:  document.getElementById('lr-doctor').value,
+    testName:  document.getElementById('lr-test').value,
+    testDate:  document.getElementById('lr-date').value,
+    status:    document.getElementById('lr-status').value,
+    result:    document.getElementById('lr-result').value,
+    remarks:   document.getElementById('lr-remarks').value,
+  };
+  try {
+    const r = await apiFetch('/lab-reports','POST',buildForm(data));
+    if (r.success) { toast('Report added'); closeModal('lab-modal'); loadLabReports(); }
+    else toast('Failed','error');
+  } catch(e) { toast(e.message,'error'); }
+}
+
+async function deleteBill(id)     { if(confirm('Delete this bill?'))     { const r=await apiFetch(`/bills/${id}`,'DELETE');     if(r.success){toast('Bill deleted');loadBilling();} } }
+async function deleteRoom(id)     { if(confirm('Delete this room?'))     { const r=await apiFetch(`/rooms/${id}`,'DELETE');     if(r.success){toast('Room deleted');loadRooms();} } }
+async function deleteMedicine(id) { if(confirm('Delete medicine?'))      { const r=await apiFetch(`/medicines/${id}`,'DELETE'); if(r.success){toast('Medicine deleted');loadPharmacy();} } }
+async function deleteStaff(id)    { if(confirm('Delete staff record?'))  { const r=await apiFetch(`/staff/${id}`,'DELETE');    if(r.success){toast('Staff deleted');loadStaff();} } }
+async function deleteReport(id)   { if(confirm('Delete this report?'))   { const r=await apiFetch(`/lab-reports/${id}`,'DELETE');if(r.success){toast('Report deleted');loadLabReports();} } }
+
+async function editDoctor(id) {
+  const d = await apiFetch(`/doctors/${id}`);
+  document.getElementById('doctor-id').value = d.doctorId;
+  document.getElementById('d-name').value = d.fullName||'';
+  document.getElementById('d-spec').value = d.specialization||'';
+  document.getElementById('d-qual').value = d.qualification||'';
+  document.getElementById('d-phone').value= d.phone||'';
+  document.getElementById('d-email').value= d.email||'';
+  document.getElementById('d-exp').value  = d.experienceYrs||0;
+  document.getElementById('d-fee').value  = d.consultationFee||0;
+  document.getElementById('d-avail').value= d.availability||'Available';
+  document.getElementById('doctor-modal-title').textContent='Edit Doctor';
+  openModal('doctor-modal');
+}
+
+async function editRoom(id) {
+  const r = await apiFetch(`/rooms/${id}`);
+  document.getElementById('room-id').value = r.roomId;
+  document.getElementById('r-num').value   = r.roomNumber||'';
+  document.getElementById('r-type').value  = r.roomType||'General';
+  document.getElementById('r-floor').value = r.floor||1;
+  document.getElementById('r-cap').value   = r.capacity||1;
+  document.getElementById('r-price').value = r.pricePerDay||0;
+  document.getElementById('r-status').value= r.status||'Available';
+  openModal('room-modal');
+}
+
+async function editMedicine(id) {
+  const m = await apiFetch(`/medicines/${id}`);
+  document.getElementById('med-id').value  = m.medicineId;
+  document.getElementById('m-name').value  = m.name||'';
+  document.getElementById('m-cat').value   = m.category||'';
+  document.getElementById('m-mfr').value   = m.manufacturer||'';
+  document.getElementById('m-price').value = m.unitPrice||0;
+  document.getElementById('m-stock').value = m.stockQty||0;
+  document.getElementById('m-expiry').value= m.expiryDate?m.expiryDate.substring(0,10):'';
+  openModal('medicine-modal');
+}
+
+async function editStaff(id) {
+  const s = await apiFetch(`/staff/${id}`);
+  document.getElementById('staff-id').value = s.staffId;
+  document.getElementById('s-name').value   = s.fullName||'';
+  document.getElementById('s-role').value   = s.role||'Nurse';
+  document.getElementById('s-dept').value   = s.department||'';
+  document.getElementById('s-phone').value  = s.phone||'';
+  document.getElementById('s-email').value  = s.email||'';
+  document.getElementById('s-salary').value = s.salary||0;
+  document.getElementById('s-join').value   = s.joinDate?s.joinDate.substring(0,10):'';
+  document.getElementById('s-status').value = s.status||'Active';
+  openModal('staff-modal');
+}
+
+async function viewReport(id) {
+  const lr = await apiFetch(`/lab-reports/${id}`);
+  alert(`Report #${lr.reportId}\nPatient: ${lr.patientName}\nTest: ${lr.testName}\nResult: ${lr.result||'N/A'}\nStatus: ${lr.status}\nRemarks: ${lr.remarks||'—'}`);
+}
+</script>
+
+<script src="js/app.js"></script>
+</body>
+</html>
